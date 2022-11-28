@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 const PORT = 3001;
 
 app.post("/login", async (req, res) => {
-  const { code } = req.body;
+  const code = Object.keys(req.body);
   const spotifyApi = new SpotifyWebApi({
     redirectUri: process.env.REDIRECT_URI,
     clientId: process.env.CLIENT_ID,
@@ -24,7 +24,7 @@ app.post("/login", async (req, res) => {
   try {
     const {
       body: { access_token, refresh_token, expires_in },
-    } = await spotifyApi.authorizationCodeGrant(code);
+    } = await spotifyApi.authorizationCodeGrant(code[0]);
 
     res.json({ access_token, refresh_token, expires_in });
   } catch (err) {
